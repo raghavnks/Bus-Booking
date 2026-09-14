@@ -27,9 +27,21 @@ pip install -r requirements-dev.txt
 copy .env.example .env        # then fill in POSTGRES_PASSWORD etc.
 ```
 
-The Postgres server is expected at `192.168.29.225:5432` (already provisioned). Update
-`.env` with real credentials and a database that exists on that server — this service
-does not create the database itself, only its own tables via Alembic.
+The Postgres server is expected at `192.168.29.225:5432` (already provisioned).
+
+### First-time DB bootstrap (database + app role don't exist yet)
+
+Run once, yourself, directly in a terminal — it prompts interactively for your
+Postgres admin password so it's never typed into a chat, a file, or committed:
+
+```bash
+python scripts\bootstrap_db.py
+```
+
+Or equivalently via `psql`/pgAdmin using `scripts/bootstrap_db.sql` (fill in the
+placeholders to match your `.env` first). Either way, this only needs to run once
+per environment — it creates the `busbooking` role and database. Table creation
+is handled separately by Alembic below.
 
 ## Run migrations
 
